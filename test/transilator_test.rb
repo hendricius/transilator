@@ -1,9 +1,9 @@
 require 'test_helper'
 
-describe Hstorly do
+describe Transilator do
   describe "version" do
     it "has a version" do
-     assert ::Hstorly::VERSION
+     assert ::Transilator::VERSION
     end
   end
   describe "database setup" do
@@ -21,7 +21,7 @@ describe Hstorly do
     end
   end
 
-  describe "hstore_translate" do
+  describe "transilator" do
     before(:each) do
       setup_db
     end

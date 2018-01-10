@@ -1,9 +1,9 @@
-module Hstorly
+module Transilator
   module ActiveRecordExtensions
 
     module ClassMethods
 
-      def hstore_translate(*args)
+      def transilator(*args)
 
 
         args.each do |attribute|
@@ -66,4 +66,4 @@ module Hstorly
   end
 end
 
-ActiveRecord::Base.extend Hstorly::ActiveRecordExtensions::ClassMethods
+ActiveRecord::Base.extend Transilator::ActiveRecordExtensions::ClassMethods

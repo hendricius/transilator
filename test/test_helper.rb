@@ -7,14 +7,15 @@ require 'rubygems'
 require 'active_support'
 require 'active_record'
 require 'pry'
-require 'hstorly'
+require 'transilator'
 
 # Let's do our active record setup with the proper database
 ActiveRecord::Base.logger = Logger.new(nil)
 ActiveRecord::Base.establish_connection(adapter: "postgresql", host: '127.0.0.1')
-ActiveRecord::Base.connection.execute('CREATE DATABASE translation_test')
+ActiveRecord::Base.connection.execute('DROP DATABASE IF EXISTS transilator_test_database')
+ActiveRecord::Base.connection.execute('CREATE DATABASE transilator_test_database')
 ActiveRecord::Base.establish_connection(adapter: "postgresql", database: "translation_test", host: '127.0.0.1')
-ActiveRecord::Base.connection.execute('CREATE EXTENSION IF NOT EXISTS hstore;')
+ActiveRecord::Base.connection.execute('CREATE EXTENSION IF NOT EXISTS hstore')
 
 # i18n setup
 I18n.enforce_available_locales = false
@@ -38,5 +39,5 @@ end
 
 class TestPost < ActiveRecord::Base
   self.table_name = 'abstract_posts'
-  hstore_translate :title, :summary
+  transilator :title, :summary
 end

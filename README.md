@@ -1,63 +1,43 @@
-# Hstorly
+# Transilator
 
-[![Build Status](https://travis-ci.org/hendricius/hstorly.svg?branch=master)](https://travis-ci.org/hendricius/hstorly)
+[![Build Status](https://travis-ci.org/hendricius/transilator.svg?branch=master)](https://travis-ci.org/hendricius/transilator)
 
-Hstorly is a small translation library for translating database values for Active Support/Rails 4 using the Hstore datatype of your Postgres database.
+Transilator makes storing translations for database records painless.
 
-This project is a fork of the amazing [bithavoc/multilang-hstore](https://github.com/bithavoc/multilang-hstore) with some remarkable differences.
+Instead of storing translations in different database tables, translations for your attributes are stored in a JSON or Hstore column directly in your table. Internally everything is stored as a hash with keys being locales and values the translations. Based on the locale whenever calling the attribute the translated value is retrieved internally.
 
-* Focus on performance. Especially when dealing with millions of records,
-  every operation counts.
-* Remove a lot of features, focus on the core features.
-* Due to focus on core features, better thread safety.
-
+Everything has been developed with performance in mind, especially when dealing with millions of records.
 ## Performance ##
 
 **1,000,000 translation read operations**
 
-hstorly:
+transilator:
 ```
   1.310000   0.020000   1.330000 (  1.342136)
 ```
 
-multilang-hstore:
-```
-  3.350000   0.040000   3.390000 (  3.383317)
-```
-
-
 **Setting a new translation entry, 100,000 times**
 
-hstorly:
+transilator:
 ```
   6.650000   0.030000   6.680000 (  6.681483)
 ```
 
-multilang-hstore:
-```
-  6.860000   0.030000   6.890000 (  6.892723)
-```
-
 **Setting a completely new object with translations 100,000 times**
 
-hstorly:
+transilator:
 
 ```
   6.980000   0.020000   7.000000 (  7.000557)
 ```
 
-multilang-hstore:
-
-```
-  7.620000   0.040000   7.660000 (  7.669240)
-```
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'hstorly'
+gem 'transilator'
 ```
 
 And then execute:
@@ -66,7 +46,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install hstorly
+    $ gem install transilator
 
 ## Usage
 
@@ -75,7 +55,7 @@ This is a walkthrough with all steps you need to setup multilang translated attr
 We're assuming here you want a Post model with some multilang attributes, as outlined below:
 
     class Post < ActiveRecord::Base
-      hstore_translate :title
+      transilator :title
     end
 
 The multilang translations are stored in the same model attributes (eg. title):
@@ -92,14 +72,14 @@ Thats it!
 Now you are able to translate values for the attributes :title and :description per locale:
 
     I18n.locale = :en
-    post.title = 'Hstorly rocks!'
+    post.title = 'Transilator rocks!'
     I18n.locale = :de
-    post.title = 'Hstorly pferdefleisch!'
+    post.title = 'Transilator pferdefleisch!'
 
     I18n.locale = :en
-    post.title #=> Hstorly rocks!
+    post.title #=> Transilator rocks!
     I18n.locale = :de
-    post.title #=> Hstorly pferdefleisch!
+    post.title #=> Transilator pferdefleisch!
 
 If this is not enough, and sometimes you want to access one of the attributes directly you can also do:
 
@@ -113,7 +93,7 @@ You may use initialization if needed:
 
 ## Bugs and Feedback
 
-Use [http://github.com/hendricius/hstorly/issues](http://github.com/hendricius/hstorly/issues)
+Use [http://github.com/hendricius/transilator/issues](http://github.com/hendricius/transilator/issues)
 
 ## Development
 
@@ -124,7 +104,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/hendricius/hstorly.
+Bug reports and pull requests are welcome on GitHub at https://github.com/hendricius/transilator.
 
 ## License(MIT)
 
