@@ -21,6 +21,18 @@ describe Transilator do
     end
   end
 
+  describe "#configure" do
+    it "accepts a block for the config" do
+      fallbacks = {
+        "de" => ["en"]
+      }
+      Transilator.configure do |config|
+        config.locale_fallbacks = fallbacks
+      end
+      assert_equal Transilator.configuration.locale_fallbacks, fallbacks
+    end
+  end
+
   describe "transilator" do
     before(:each) do
       setup_db
@@ -98,6 +110,28 @@ describe Transilator do
         post = TestPost.new(title: "wurst")
         post.save!
         assert_equal "wurst", post.reload.title_en
+      end
+    end
+
+    describe "fallbacks in case we have nothing set" do
+      it "falls back to the first element we find" do
+        # setup our service with fallbacks
+        fallbacks = {
+          "de" => ["en", "ie"]
+        }
+        Transilator.configure do |config|
+          config.locale_fallbacks = fallbacks
+        end
+
+        post_without_data = TestPost.new
+        assert_equal post_without_data.title, ""
+        I18n.locale = :de
+        post = TestPost.new(title: "wurst")
+        assert_equal "wurst", post.title
+        post_with_fallbacks = TestPost.new(title: {"en": "sausage"})
+        assert_equal "sausage", post_with_fallbacks.title
+        post_with_third_level_fallbacks = TestPost.new(title: {"ie": "thasausage"})
+        assert_equal "thasausage", post_with_third_level_fallbacks.title
       end
     end
 

@@ -32,11 +32,11 @@ You may need to create migration for your model as usual. Assuming you have no
 table yet, create the table:
 
 ```ruby
-  create_table :posts do |t|
-    t.hstore :title  # note for this to work you need to enable the hstore extension in your database.
-    t.jsonb :summary # this is the suggested way.
-    t.timestamps
-  end
+create_table :posts do |t|
+  t.hstore :title  # note for this to work you need to enable the hstore extension in your database.
+  t.jsonb :summary # this is the suggested way.
+  t.timestamps
+end
 ```
 
 Then adjust your model and integrate transilator:
@@ -48,6 +48,8 @@ end
 ```
 
 Thats it!
+
+**Basic usage**
 
 Now you are able to translate values for the attributes :title and :description per locale:
 
@@ -71,10 +73,28 @@ post.title_en = 'I have no idea what I am doing'
 post.title_en #=> I have no idea what I am doing
 ```
 
+You can pass the values directly during initialisation of an object:
+```ruby
+Post.new(title: {en: 'The German', de: 'Serr German'})
+```
 
-You may use initialization if needed:
+**Fallbacks**
 
-    Post.new(title: {en: 'The German', de: 'Serr German'})
+You can setup fallbacks in case you are missing data from one language. Then
+the next language is used based on the order in the fallbacks array.
+
+Create an initializer `initializers/transilator.rb` in your rails app.
+
+```ruby
+Transilator.configure do |config|
+  config.locale_fallbacks = { "de" => ["en", "at"] }
+end
+```
+
+Now in case we wouldn't have a German translation we fallback to English. If
+we have no English translation then we will proceed and try our Austrian
+translation. If that doesn't work then empty string is returned.
+
 
 ## Performance ##
 
