@@ -4,7 +4,7 @@
 
 Transilator makes storing translations for database records painless.
 
-Instead of storing translations in different database tables, translations for your attributes are stored in a JSON or Hstore column directly in your table. Internally everything is stored as a hash with keys being locales and values the translations. Based on the locale whenever calling the attribute the translated value is retrieved internally.
+Instead of storing translations in different database tables, translations for your attributes are stored in a JSON/JSONB or Hstore column directly in your table. Internally everything is stored as a hash with keys being locales and values the translations. Based on the locale whenever calling the attribute the translated value is retrieved internally.
 
 Everything has been developed with performance in mind, especially when dealing with millions of records.
 
@@ -33,8 +33,8 @@ table yet, create the table:
 
 ```ruby
   create_table :posts do |t|
-    t.hstore :title
-    t.jsonb :summary
+    t.hstore :title  # note for this to work you need to enable the hstore extension in your database.
+    t.jsonb :summary # this is the suggested way.
     t.timestamps
   end
 ```
