@@ -32,11 +32,11 @@ You may need to create migration for your model as usual. Assuming you have no
 table yet, create the table:
 
 ```ruby
-  create_table :posts do |t|
-    t.hstore :title  # note for this to work you need to enable the hstore extension in your database.
-    t.jsonb :summary # this is the suggested way.
-    t.timestamps
-  end
+create_table :posts do |t|
+  t.hstore :title  # note for this to work you need to enable the hstore extension in your database.
+  t.jsonb :summary # this is the suggested way.
+  t.timestamps
+end
 ```
 
 Then adjust your model and integrate transilator:
