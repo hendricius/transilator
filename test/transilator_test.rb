@@ -21,6 +21,18 @@ describe Transilator do
     end
   end
 
+  describe "#configure" do
+    it "accepts a block for the config" do
+      fallbacks = {
+        "de" => ["en"]
+      }
+      Transilator.configure do |config|
+        config.locale_fallbacks = fallbacks
+      end
+      assert_equal Transilator.configuration.locale_fallbacks, fallbacks
+    end
+  end
+
   describe "transilator" do
     before(:each) do
       setup_db
