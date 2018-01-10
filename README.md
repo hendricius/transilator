@@ -1,6 +1,6 @@
 # Transilator
 
-[![Build Status](https://travis-ci.org/hendricius/transilator.svg?branch=master)](https://travis-ci.org/hendricius/transilator)
+[![CircleCI](https://circleci.com/gh/hendricius/transilator.svg?style=svg)](https://circleci.com/gh/hendricius/transilator)
 
 Transilator makes storing translations for database records painless.
 
