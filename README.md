@@ -7,30 +7,6 @@ Transilator makes storing translations for database records painless.
 Instead of storing translations in different database tables, translations for your attributes are stored in a JSON or Hstore column directly in your table. Internally everything is stored as a hash with keys being locales and values the translations. Based on the locale whenever calling the attribute the translated value is retrieved internally.
 
 Everything has been developed with performance in mind, especially when dealing with millions of records.
-## Performance ##
-
-**1,000,000 translation read operations**
-
-transilator:
-```
-  1.310000   0.020000   1.330000 (  1.342136)
-```
-
-**Setting a new translation entry, 100,000 times**
-
-transilator:
-```
-  6.650000   0.030000   6.680000 (  6.681483)
-```
-
-**Setting a completely new object with translations 100,000 times**
-
-transilator:
-
-```
-  6.980000   0.020000   7.000000 (  7.000557)
-```
-
 
 ## Installation
 
@@ -50,46 +26,98 @@ Or install it yourself as:
 
 ## Usage
 
-This is a walkthrough with all steps you need to setup multilang translated attributes, including model and migration.
+This is a walkthrough with all steps you need to get you up and running.
 
-We're assuming here you want a Post model with some multilang attributes, as outlined below:
+You may need to create migration for your model as usual. Assuming you have no
+table yet, create the table:
 
-    class Post < ActiveRecord::Base
-      transilator :title
-    end
+```ruby
+  create_table :posts do |t|
+    t.hstore :title
+    t.jsonb :summary
+    t.timestamps
+  end
+```
 
-The multilang translations are stored in the same model attributes (eg. title):
+Then adjust your model and integrate transilator:
 
-You may need to create migration for Post as usual, but multilang attributes should be in hstore type:
-
-    create_table(:posts) do |t|
-      t.hstore :title
-      t.timestamps
-    end
+```ruby
+class Post < ActiveRecord::Base
+  transilator :title, :summary
+end
+```
 
 Thats it!
 
 Now you are able to translate values for the attributes :title and :description per locale:
 
-    I18n.locale = :en
-    post.title = 'Transilator rocks!'
-    I18n.locale = :de
-    post.title = 'Transilator pferdefleisch!'
+```ruby
+I18n.locale = :en
+post.title = 'Eel is a typical food in Hamburg'
+I18n.locale = :de
+post.title = 'Aal ist typisch für Hamburg'
 
-    I18n.locale = :en
-    post.title #=> Transilator rocks!
-    I18n.locale = :de
-    post.title #=> Transilator pferdefleisch!
+I18n.locale = :en
+post.title #=> Eel is a typical food in Hamburg
+I18n.locale = :de
+post.title #=> Aal ist typisch für Hamburg
+```
 
 If this is not enough, and sometimes you want to access one of the attributes directly you can also do:
 
-    post.title_en = 'Hulk > Time punch'
-    post.title_en #=> Hulk > Time punch
+
+```ruby
+post.title_en = 'I have no idea what I am doing'
+post.title_en #=> I have no idea what I am doing
+```
 
 
 You may use initialization if needed:
 
-    Post.new(title: {en: 'Cows rock', de: 'Kühe rocken'})
+    Post.new(title: {en: 'The German', de: 'Serr German'})
+
+## Performance ##
+
+When developing I tested against against [bithavoc/multilang-hstore](https://github.com/bithavoc/multilang-hstore) as this has been my choice for years.
+
+**1,000,000 translation read operations**
+
+transilator:
+```
+  1.310000   0.020000   1.330000 (  1.342136)
+```
+
+multilang-hstore:
+```
+  3.350000   0.040000   3.390000 (  3.383317)
+```
+
+
+**Setting a new translation entry, 100,000 times**
+
+transilator:
+```
+  6.650000   0.030000   6.680000 (  6.681483)
+```
+
+multilang-hstore:
+```
+  6.860000   0.030000   6.890000 (  6.892723)
+```
+
+**Setting a completely new object with translations 100,000 times**
+
+transilator:
+
+```
+  6.980000   0.020000   7.000000 (  7.000557)
+```
+
+multilang-hstore:
+
+```
+  7.620000   0.040000   7.660000 (  7.669240)
+```
 
 ## Bugs and Feedback
 
@@ -104,8 +132,8 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/hendricius/transilator.
+Bug reports and pull requests are welcome on GitHub at https://github.com/hendricius/transilator
 
 ## License(MIT)
 
-* Copyright (c) 2015 Hendrik Kleinwaechter and Contributors
+* Copyright (c) 2017 Hendrik Kleinwaechter and contributors
