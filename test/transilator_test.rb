@@ -114,15 +114,15 @@ describe Transilator do
     end
 
     describe "fallbacks in case we have nothing set" do
-      before(:each) do
+      it "falls back to the first element we find" do
+        # setup our service with fallbacks
         fallbacks = {
           "de" => ["en", "ie"]
         }
         Transilator.configure do |config|
           config.locale_fallbacks = fallbacks
         end
-      end
-      it "falls back to the first element we find" do
+
         post_without_data = TestPost.new
         assert_equal post_without_data.title, ""
         I18n.locale = :de

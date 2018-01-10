@@ -5,14 +5,26 @@ module Transilator
 
       def transilator(*args)
 
-
         args.each do |attribute|
 
           # read the attribute from the hstore attribute and return it.
           #
           # returns the attribute or an empty string if the attribute is nil
           define_method attribute do
-            (self[attribute] || {})[I18n.locale.to_s] || ""
+            locale = I18n.locale.to_s
+            attribute_value_hash = (self[attribute] || {})
+            value = (attribute_value_hash)[locale] || ""
+            # we have a value, so let's abort.
+            return value unless value.empty?
+            # now implement our fallback mechanism
+            fallbacks_for_locale  = Transilator.config.get_fallbacks_for_locale(locale)
+            return value if fallbacks_for_locale.empty?
+            # now do the magic for figuring out the fallback
+            fallback_locale_to_use = fallbacks_for_locale.find {|f| (attribute_value_hash)[f] }
+            # no fallback that can be used found.
+            return "" unless fallback_locale_to_use
+            # return our value or an empty string
+            attribute_value_hash[fallback_locale_to_use] || ""
           end
 
           # set the attribute on the model on the hstore hash
