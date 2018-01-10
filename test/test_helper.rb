@@ -2,7 +2,6 @@ $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 
 require 'minitest/autorun'
 
-
 require 'rubygems'
 require 'active_support'
 require 'active_record'
@@ -14,7 +13,7 @@ ActiveRecord::Base.logger = Logger.new(nil)
 ActiveRecord::Base.establish_connection(adapter: "postgresql", host: '127.0.0.1')
 ActiveRecord::Base.connection.execute('DROP DATABASE IF EXISTS transilator_test_database')
 ActiveRecord::Base.connection.execute('CREATE DATABASE transilator_test_database')
-ActiveRecord::Base.establish_connection(adapter: "postgresql", database: "translation_test_database", host: '127.0.0.1')
+ActiveRecord::Base.establish_connection(adapter: "postgresql", database: "transilator_test_database", host: '127.0.0.1')
 ActiveRecord::Base.connection.execute('CREATE EXTENSION IF NOT EXISTS hstore')
 
 # i18n setup
