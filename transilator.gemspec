@@ -1,17 +1,17 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'hstorly/version'
+require 'transilator/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "hstorly"
-  spec.version       = Hstorly::VERSION
+  spec.name          = "transilator"
+  spec.version       = Transilator::VERSION
   spec.authors       = ['Hendrik Kleinwaechter']
   spec.email         = ['hendrik.kleinwaechter@gmail.com']
 
-  spec.summary       = %q{Fast and efficient model translations in the database for PostgreSQL and Hstore}
-  spec.description   = %q{Fast and efficient model translations in the databse for PostgreSQL and Hstore.}
-  spec.homepage      = "https://github.com/hendricius/hstorly"
+  spec.summary       = %q{Fast and efficient model translations in the database for PostgreSQL hstore and JSON}
+  spec.description   = %q{Fast and efficient model translations in the databse for PostgreSQL hstore and JSON.}
+  spec.homepage      = "https://github.com/hendricius/transilator"
   spec.licenses      = ['MIT']
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }

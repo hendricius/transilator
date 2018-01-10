@@ -1,3 +1,3 @@
-module Hstorly
+module Transilator
   VERSION = "0.1.5"
 end
