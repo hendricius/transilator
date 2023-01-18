@@ -23,6 +23,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'minitest', "~> 5.0"
   spec.add_development_dependency 'pry', "~> 0.1"
 
-  spec.add_dependency 'activerecord', '~> 6.0'
+  spec.add_dependency 'activerecord', '>= 6', '< 8'
   spec.add_dependency 'pg', '~> 1.0'
 end
